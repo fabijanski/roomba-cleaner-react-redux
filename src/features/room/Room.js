@@ -2,8 +2,9 @@ import React from 'react';
 import { connect } from 'react-redux';
 import injectSheet from 'react-jss';
 import PropTypes from 'prop-types';
+// import handleDirtRemoving from './dirtRemoving';
 import Dirt from '../dirt/Dirt';
-
+import { getDirtCoordinates, getHooverPosition } from '../../config/selectors';
 
 const styles = {
   root: {
@@ -14,19 +15,25 @@ const styles = {
   },
 };
 
-function Room(props) {
-  return (
-    <div className={props.classes.root}>
-      {
-        props.dirtCoordinates.map(coordinates => (
-          <Dirt
-            key={coordinates.join('')}
-            coordinates={coordinates}
-          />
-        ))
-      }
-    </div>
-  )
+class Room extends React.Component {
+  // componentDidUpdate() {
+  //   handleDirtRemoving(this.props.hooverPosition, this.props.dirtCoordinates);
+  // }
+  
+  render() {
+    return (
+      <div className={this.props.classes.root}>
+        {
+          this.props.dirtCoordinates.map(coordinates => (
+            <Dirt
+              key={coordinates.join('')}
+              coordinates={coordinates}
+            />
+          ))
+        }
+      </div>
+    )
+  }
 }
 
 Room.propTypes = {
@@ -34,11 +41,11 @@ Room.propTypes = {
   dirtCoordinates: PropTypes.arrayOf(PropTypes.array).isRequired,
 };
 
-function mapStateToProps(state) {
-  return {
-    ...state.room,
-  }
-}
+const mapStateToProps = state => ({
+  dirtCoordinates: getDirtCoordinates(state),
+  hooverPosition: getHooverPosition(state),
+});
 
 const RoomStyled = injectSheet(styles)(Room);
+
 export default connect(mapStateToProps)(RoomStyled);

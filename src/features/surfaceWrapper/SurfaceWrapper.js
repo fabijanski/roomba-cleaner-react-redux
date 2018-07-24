@@ -1,19 +1,21 @@
 import React  from 'react';
 import injectSheet from 'react-jss';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import Room from '../room/Room';
 import Hoover from '../hoover/Hoover';
-import PropTypes from "prop-types";
 import { MODULE_SIZE } from '../../config/constants';
-import { ROOM_HEIGHT, ROOM_WIDTH } from '../../config/variables';
+import { getRoomHeight, getRoomWidth } from '../../config/selectors';
+
 
 const styles = {
-  root: {
+  root: props => ({
     position: 'relative',
-    width: ROOM_WIDTH * MODULE_SIZE,
-    height: ROOM_HEIGHT * MODULE_SIZE,
+    width: props.roomWidth * MODULE_SIZE,
+    height: props.roomHeight * MODULE_SIZE,
     margin: '20px auto',
     border: '5px solid #000',
-  }
+  }),
 };
 
 function SurfaceWrapper(props) {
@@ -27,6 +29,17 @@ function SurfaceWrapper(props) {
 
 SurfaceWrapper.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
+  roomWidth: PropTypes.number.isRequired,
+  roomHeight: PropTypes.number.isRequired,
 };
 
-export default injectSheet(styles)(SurfaceWrapper);
+const mapStateToProps = state => ({
+  roomWidth: getRoomWidth(state),
+  roomHeight: getRoomHeight(state),
+});
+
+const SurfaceWrapperStyled = injectSheet(styles)(SurfaceWrapper);
+
+export default connect(mapStateToProps)(SurfaceWrapperStyled);
+
+
