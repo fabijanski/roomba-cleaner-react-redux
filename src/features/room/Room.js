@@ -18,7 +18,12 @@ function Room(props) {
   return (
     <div className={props.classes.root}>
       {
-        props.dirtCoordinates.map(coordinates => <Dirt key={coordinates.join('')} coordinates={coordinates}/>)
+        props.dirtCoordinates.map(coordinates => (
+          <Dirt
+            key={coordinates.join('')}
+            coordinates={coordinates}
+          />
+        ))
       }
     </div>
   )
