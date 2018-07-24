@@ -6,7 +6,7 @@ const hooverReducer = (state = initialState, action) => {
   switch(action.type) {
     case 'MOVE_HOOVER':
       return {
-        ...action.payload,
+        position: action.position,
       };
     default:
       return state;

@@ -1,6 +1,5 @@
 import store from '../../config/store';
-import { ROOM_HEIGHT, ROOM_WIDTH } from '../../config/variables';
-
+import handleDirtRemoving from '../room/dirtRemoving';
 
 export default function handleMovement(hoover) {
   const moves = 'ENNNSSSEWWWW'.split('');
@@ -24,24 +23,36 @@ export default function handleMovement(hoover) {
   
   function observeBoundaries(oldPosition, newPosition) {
     return (
-      (newPosition[0] >=0 && newPosition[0] < ROOM_WIDTH) &&
-      (newPosition[1] >=0 && newPosition[1] < ROOM_HEIGHT)
+      (newPosition[0] >=0 && newPosition[0] < 5) &&
+      (newPosition[1] >=0 && newPosition[1] < 5)
       ? newPosition : oldPosition
     )
   }
   
+  // function observeDirtPatches(hooverPosition, dirtCoordinates) {
+  //   return dirtCoordinates.map((item, index) => {
+  //     (item[0] === hooverPosition[0] && item[1] === hooverPosition[1])
+  //       ? dirtCoordinates.splice(index, 1)
+  //       : dirtCoordinates;
+  //   });
+  // }
+  
   let delayTime = 0;
   
   function dispatchMove(direction) {
+    
     const oldPosition = store.getState().hoover.position;
+    const hooverPosition = store.getState().hoover.position;
+    const dirtCoordinates = store.getState().room.dirtCoordinates;
   
+    handleDirtRemoving(hooverPosition, dirtCoordinates);
     setTimeout(() => {
-      return store.dispatch({
-        type: 'MOVE_HOOVER',
-        payload: {
+      return store.dispatch(
+        {
+          type: 'MOVE_HOOVER',
           position: observeBoundaries(oldPosition, getNewPosition(direction))
-        }
-      })
+        },
+      )
     }, delayTime);
   }
   
@@ -63,3 +74,7 @@ export default function handleMovement(hoover) {
   
   return hoover;
 }
+//
+// const mapStateToProps = state => ({
+//   hooverPosition:
+// })

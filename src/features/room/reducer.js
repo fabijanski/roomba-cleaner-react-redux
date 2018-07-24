@@ -1,5 +1,6 @@
 const initialState = {
   dirtCoordinates: [
+    [1,0],
     [1,2],
     [3,4],
     [2,3],
@@ -10,6 +11,11 @@ const initialState = {
 
 const roomReducer = (state = initialState, action) => {
   switch(action.type) {
+    case 'REMOVE_DIRT':
+      return {
+        ...state,
+        dirtCoordinates: action.dirtCoordinates,
+      };
     default:
       return state;
   }

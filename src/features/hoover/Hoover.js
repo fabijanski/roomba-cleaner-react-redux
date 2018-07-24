@@ -5,14 +5,15 @@ import PropTypes from 'prop-types';
 import hooverImg from './roomba_hoover.png';
 import handleMovement from './movement';
 import { MODULE_SIZE } from '../../config/constants';
+import { getHooverPosition } from '../../config/selectors';
 
 
 const styles = {
   root: props => ({
     position: 'absolute',
     backgroundImage: `url('${hooverImg}')`,
-    left: props.position[0] * MODULE_SIZE,
-    bottom: props.position[1] * MODULE_SIZE,
+    left: props.hooverPosition[0] * MODULE_SIZE,
+    bottom: props.hooverPosition[1] * MODULE_SIZE,
     width: MODULE_SIZE,
     height: MODULE_SIZE,
     backgroundSize: 'cover',
@@ -27,14 +28,14 @@ function Hoover(props) {
 
 Hoover.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
-  position: PropTypes.arrayOf(PropTypes.number).isRequired,
+  hooverPosition: PropTypes.arrayOf(PropTypes.number).isRequired,
 };
 
-function mapStateToProps(state) {
-  return {
-    ...state.hoover,
-  }
-}
+const mapStateToProps = state => ({
+  hooverPosition: getHooverPosition(state),
+});
 
 const HooverStyled = injectSheet(styles)(Hoover);
+
 export default connect(mapStateToProps)(handleMovement(HooverStyled));
+
