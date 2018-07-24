@@ -3,13 +3,14 @@ import injectSheet from 'react-jss';
 import Room from '../room/Room';
 import Hoover from '../hoover/Hoover';
 import PropTypes from "prop-types";
-
+import { MODULE_SIZE } from '../../config/constants';
+import { ROOM_HEIGHT, ROOM_WIDTH } from '../../config/variables';
 
 const styles = {
   root: {
     position: 'relative',
-    width: 250,
-    height: 250,
+    width: ROOM_WIDTH * MODULE_SIZE,
+    height: ROOM_HEIGHT * MODULE_SIZE,
     margin: '20px auto',
     border: '5px solid #000',
   }

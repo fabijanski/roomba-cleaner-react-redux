@@ -4,7 +4,8 @@ const initialState = {
     [3,4],
     [2,3],
     [4,0],
-  ]
+  ],
+  roomDimensions: [5,5],
 };
 
 const roomReducer = (state = initialState, action) => {
