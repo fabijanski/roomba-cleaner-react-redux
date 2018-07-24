@@ -9,11 +9,11 @@ const styles = {
   root: props => ({
     position: 'absolute',
     backgroundImage: `url('${hooverImg}')`,
-    left: props.position[0],
-    bottom: props.position[1],
+    left: props.position[0] * 50,
+    bottom: props.position[1] * 50,
     width: 50,
     height: 50,
-    backgroundSize: 'cover'
+    backgroundSize: 'cover',
   }),
 };
 

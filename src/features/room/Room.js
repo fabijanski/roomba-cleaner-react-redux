@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import injectSheet from 'react-jss';
 import PropTypes from 'prop-types';
+import Dirt from '../dirt/Dirt';
 
 
 const styles = {
@@ -14,15 +15,18 @@ const styles = {
 };
 
 function Room(props) {
-  console.log(props);
   return (
-    <div className={props.classes.root} />
+    <div className={props.classes.root}>
+      {
+        props.dirtCoordinates.map(coordinates => <Dirt key={coordinates.join('')} coordinates={coordinates}/>)
+      }
+    </div>
   )
 }
 
 Room.propTypes = {
   classes: PropTypes.objectOf(PropTypes.string).isRequired,
-  position: PropTypes.arrayOf(PropTypes.number).isRequired,
+  dirtCoordinates: PropTypes.arrayOf(PropTypes.array).isRequired,
 };
 
 function mapStateToProps(state) {
