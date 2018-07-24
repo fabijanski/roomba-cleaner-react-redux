@@ -1,3 +1,7 @@
+import {
+  CLEAN_DIRT,
+} from "../hoover/constants";
+
 const initialState = {
   dirtCoordinates: [
     [1,0],
@@ -9,12 +13,18 @@ const initialState = {
   roomDimensions: [5,5],
 };
 
+function cleanDirt(dirtCoordinates, hooverPosition) {
+  console.log('hooverPosition', hooverPosition);
+  return dirtCoordinates.filter((item) => item[0] !== hooverPosition[0] || item[1] !== hooverPosition[1]);
+
+}
+
 const roomReducer = (state = initialState, action) => {
   switch(action.type) {
-    case 'REMOVE_DIRT':
+    case CLEAN_DIRT:
       return {
         ...state,
-        dirtCoordinates: action.dirtCoordinates,
+        dirtCoordinates: cleanDirt(state.dirtCoordinates, action.hooverPosition),
       };
     default:
       return state;
