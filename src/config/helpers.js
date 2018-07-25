@@ -1,9 +1,16 @@
+import {
+  AVAILABLE_DIRECTIONS,
+} from './constants';
+
+
 export const parseTextData = textData => {
   const rows = textData.split("\n");
-
-  // remove empty rows
+  
+  const regExpValue = `[${AVAILABLE_DIRECTIONS.join('').toString()}]+`;
+  const validateDirs = new RegExp(regExpValue, "g");
+  
   const filteredRows = rows.filter(row => row.length > 0 );
-
+  
   return {
     roomDimensions: filteredRows[0]
       .split(' ')
@@ -16,6 +23,10 @@ export const parseTextData = textData => {
       .map(row => row.split(' ')
       .map(num => parseInt(num, 10))),
     directions: filteredRows[filteredRows.length - 1]
+      .toUpperCase()
+      .match(validateDirs)
+      .join('')
       .split('')
   };
 };
+
