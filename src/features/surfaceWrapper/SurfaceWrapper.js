@@ -4,9 +4,16 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import Room from '../room/Room';
 import Hoover from '../hoover/Hoover';
-import { MODULE_SIZE, TEXT_DATA_URL } from '../../config/constants';
-import { getRoomHeight, getRoomWidth } from '../../config/selectors';
-import { fetchData } from '../../config/api';
+import { MODULE_SIZE } from '../../config/constants';
+import { dataRequest } from '../../config/api';
+import {
+  getRoomHeight,
+  getRoomWidth,
+  initHooverPosition,
+  initDirections,
+  initDirtCoordinates,
+  initRoomDimensions,
+} from '../../config/selectors';
 
 import {
   initHooverState,
@@ -30,14 +37,15 @@ class SurfaceWrapper extends React.Component {
     roomHeight: PropTypes.number.isRequired,
   };
   
-  componentDidMount() {
+  async componentDidMount() {
+    await this.props.fetchData();
     this.initializeStore();
   }
   
-  async initializeStore() {
-    const state = await fetchData(TEXT_DATA_URL);
-    await this.props.initRoomState(state.roomDimensions, state.dirtCoordinates);
-    await this.props.initHooverState(state.position, state.directions);
+  
+  initializeStore() {
+    this.props.initRoomState(this.props.roomDimensions, this.props.dirtCoordinates);
+    this.props.initHooverState(this.props.hooverPosition, this.props.directions);
   };
   
   render() {
@@ -53,11 +61,17 @@ class SurfaceWrapper extends React.Component {
 const mapStateToProps = state => ({
   roomWidth: getRoomWidth(state),
   roomHeight: getRoomHeight(state),
+  hooverPosition: initHooverPosition(state),
+  directions: initDirections(state),
+  dirtCoordinates: initDirtCoordinates(state),
+  roomDimensions: initRoomDimensions(state),
 });
 
 const mapDispatchToProps = dispatch => ({
   initRoomState: (roomDimensions, dirtCoordinates) => dispatch(initRoomState(roomDimensions, dirtCoordinates)),
   initHooverState: (position, directions) => dispatch(initHooverState(position, directions)),
+  fetchData: () => dispatch(dataRequest()),
+  
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(injectSheet(styles)(SurfaceWrapper));

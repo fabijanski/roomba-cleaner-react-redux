@@ -35,8 +35,6 @@ class Hoover extends React.Component {
   }
 
   componentDidUpdate() {
-    console.log('updated here!');
-  
     this.props.cleanDirt(this.props.hooverPosition);
   }
 

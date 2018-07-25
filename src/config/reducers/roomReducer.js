@@ -3,6 +3,7 @@ import {
   INIT_ROOM_STATE,
 } from '../constants';
 
+
 const initialState = {
   roomDimensions: [],
   dirtCoordinates: [],
