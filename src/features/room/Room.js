@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import Dirt from '../dirt/Dirt';
 import { getDirtCoordinates, getHooverPosition } from '../../config/selectors';
 
+
 const styles = {
   root: {
     position: 'relative',
@@ -15,11 +16,16 @@ const styles = {
 };
 
 class Room extends React.Component {
+  static propTypes = {
+    classes: PropTypes.objectOf(PropTypes.string).isRequired,
+    dirtCoordinates: PropTypes.arrayOf(PropTypes.array).isRequired,
+    hooverPosition: PropTypes.arrayOf(PropTypes.number).isRequired,
+  };
+  
   render() {
     return (
       <div className={this.props.classes.root}>
         {
-          this.props.dirtCoordinates &&
           this.props.dirtCoordinates.map(coordinates => (
             <Dirt
               key={coordinates.join('')}
@@ -31,11 +37,6 @@ class Room extends React.Component {
     )
   }
 }
-
-Room.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
-  dirtCoordinates: PropTypes.arrayOf(PropTypes.array).isRequired,
-};
 
 const mapStateToProps = state => ({
   dirtCoordinates: getDirtCoordinates(state),

@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import Wrapper from './features/surfaceWrapper/SurfaceWrapper';
 
 class App extends Component {
   render() {
     return (
-      <div>
+      <Fragment>
         <Wrapper />
-      </div>
+      </Fragment>
     );
   }
 }

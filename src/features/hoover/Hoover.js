@@ -5,11 +5,11 @@ import PropTypes from 'prop-types';
 import hooverImg from './roomba_hoover.png';
 import { MODULE_SIZE } from '../../config/constants';
 import { getHooverPosition, getDirections } from '../../config/selectors';
-
 import {
   moveHoover,
   cleanDirt,
 } from '../../config/actions';
+
 
 const styles = {
   root: props => ({
@@ -28,6 +28,8 @@ class Hoover extends React.Component {
     classes: PropTypes.objectOf(PropTypes.string).isRequired,
     hooverPosition: PropTypes.arrayOf(PropTypes.number).isRequired,
     directions: PropTypes.arrayOf(PropTypes.string).isRequired,
+    cleanDirt: PropTypes.func.isRequired,
+    moveHoover: PropTypes.func.isRequired,
   };
   
   componentDidMount() {
@@ -40,7 +42,7 @@ class Hoover extends React.Component {
 
   handleHooverMove = () => {
     this.props.directions.forEach((direction, index) => {
-      setTimeout(() => this.props.moveHoover(direction.toUpperCase()), (index + 1) * 1000);
+      setTimeout(() => this.props.moveHoover(direction), (index + 1) * 750);
     });
   };
 

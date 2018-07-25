@@ -8,6 +8,7 @@ import {
   FETCH_DATA_ERROR,
 } from './constants';
 
+
 export const moveHoover = direction => ({ type: MOVE_HOOVER, direction});
 export const cleanDirt = (hooverPosition) => ({ type: CLEAN_DIRT, hooverPosition});
 

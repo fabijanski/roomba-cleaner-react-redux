@@ -1,11 +1,10 @@
 import {
   MOVE_HOOVER,
-  AVAILABLE_DIRECTIONS,
   INIT_HOOVER_STATE
 } from '../constants';
 
-function getNewPosition(oldPosition, direction) {
 
+function getNewPosition(oldPosition, direction) {
   if (!oldPosition) {
     return;
   }
@@ -37,16 +36,13 @@ function observeBoundaries(oldPosition, newPosition) {
 }
 
 function dispatchMove(hooverPosition, direction) {
-  if (!AVAILABLE_DIRECTIONS.includes(direction)) {
-    return; // todo error handling
-  }
-
   return observeBoundaries(hooverPosition, getNewPosition(hooverPosition, direction));
 }
 
 const initialState = {
   position: [],
-  directions: []
+  directions: [],
+  stateInitialized: false
 };
 
 const hooverReducer = (state = initialState, action) => {
@@ -54,7 +50,8 @@ const hooverReducer = (state = initialState, action) => {
     case INIT_HOOVER_STATE:
       return {
         position: action.position,
-        directions: action.directions
+        directions: action.directions,
+        stateInitialized: true,
       };
     case MOVE_HOOVER:
       const hooverPosition = dispatchMove(state.position, action.direction);

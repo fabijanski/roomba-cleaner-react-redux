@@ -1,10 +1,11 @@
+import { TEXT_DATA_URL } from './constants';
+import { parseTextData } from './helpers';
 import {
   fetchData,
   fetchDataError,
   fetchDataSuccess,
 } from './actions';
-import { TEXT_DATA_URL } from './constants';
-import { parseTextData } from './helpers';
+
 
 export const dataRequest = () => (dispatch) => {
   dispatch(fetchData());
