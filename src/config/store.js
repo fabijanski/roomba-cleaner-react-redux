@@ -1,6 +1,6 @@
 import { createStore, combineReducers } from 'redux';
-import hooverReducer from '../features/hoover/reducer';
-import roomReducer from '../features/room/reducer';
+import hooverReducer from './reducers/hooverReducer';
+import roomReducer from './reducers/roomReducer';
 
 const rootReducer = combineReducers({
   hoover: hooverReducer,

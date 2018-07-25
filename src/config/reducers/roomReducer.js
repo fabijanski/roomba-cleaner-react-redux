@@ -1,30 +1,28 @@
 import {
   CLEAN_DIRT,
-} from "../hoover/constants";
+  INIT_ROOM_STATE,
+} from '../constants';
 
 const initialState = {
-  dirtCoordinates: [
-    [1,0],
-    [1,2],
-    [3,4],
-    [2,3],
-    [4,0],
-  ],
-  roomDimensions: [5,5],
+  roomDimensions: [],
+  dirtCoordinates: [],
 };
 
-function cleanDirt(dirtCoordinates, hooverPosition) {
-  console.log('hooverPosition', hooverPosition);
+function removeDirt(dirtCoordinates, hooverPosition) {
   return dirtCoordinates.filter((item) => item[0] !== hooverPosition[0] || item[1] !== hooverPosition[1]);
-
 }
 
 const roomReducer = (state = initialState, action) => {
   switch(action.type) {
+    case INIT_ROOM_STATE:
+      return {
+        roomDimensions: action.roomDimensions,
+        dirtCoordinates: action.dirtCoordinates,
+      };
     case CLEAN_DIRT:
       return {
         ...state,
-        dirtCoordinates: cleanDirt(state.dirtCoordinates, action.hooverPosition),
+        dirtCoordinates: removeDirt(state.dirtCoordinates, action.hooverPosition),
       };
     default:
       return state;
