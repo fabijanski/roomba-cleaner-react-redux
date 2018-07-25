@@ -5,8 +5,20 @@ import PropTypes from 'prop-types';
 import Room from '../room/Room';
 import Hoover from '../hoover/Hoover';
 import { MODULE_SIZE } from '../../config/constants';
-import { getRoomHeight, getRoomWidth } from '../../config/selectors';
+import { dataRequest } from '../../config/api';
+import {
+  getRoomHeight,
+  getRoomWidth,
+  initHooverPosition,
+  initDirections,
+  initDirtCoordinates,
+  initRoomDimensions,
+} from '../../config/selectors';
 
+import {
+  initHooverState,
+  initRoomState,
+} from '../../config/actions';
 
 const styles = {
   root: props => ({
@@ -18,28 +30,50 @@ const styles = {
   }),
 };
 
-function SurfaceWrapper(props) {
-  return (
-    <div className={props.classes.root}>
-      <Room />
-      <Hoover />
-    </div>
-  );
+class SurfaceWrapper extends React.Component {
+  static propTypes = {
+    classes: PropTypes.objectOf(PropTypes.string).isRequired,
+    roomWidth: PropTypes.number.isRequired,
+    roomHeight: PropTypes.number.isRequired,
+  };
+  
+  async componentDidMount() {
+    await this.props.fetchData();
+    this.initializeStore();
+  }
+  
+  
+  initializeStore() {
+    this.props.initRoomState(this.props.roomDimensions, this.props.dirtCoordinates);
+    this.props.initHooverState(this.props.hooverPosition, this.props.directions);
+  };
+  
+  render() {
+    return (
+      <div className={this.props.classes.root}>
+        <Room />
+        <Hoover />
+      </div>
+    );
+  }
 }
-
-SurfaceWrapper.propTypes = {
-  classes: PropTypes.objectOf(PropTypes.string).isRequired,
-  roomWidth: PropTypes.number.isRequired,
-  roomHeight: PropTypes.number.isRequired,
-};
 
 const mapStateToProps = state => ({
   roomWidth: getRoomWidth(state),
   roomHeight: getRoomHeight(state),
+  hooverPosition: initHooverPosition(state),
+  directions: initDirections(state),
+  dirtCoordinates: initDirtCoordinates(state),
+  roomDimensions: initRoomDimensions(state),
 });
 
-const SurfaceWrapperStyled = injectSheet(styles)(SurfaceWrapper);
+const mapDispatchToProps = dispatch => ({
+  initRoomState: (roomDimensions, dirtCoordinates) => dispatch(initRoomState(roomDimensions, dirtCoordinates)),
+  initHooverState: (position, directions) => dispatch(initHooverState(position, directions)),
+  fetchData: () => dispatch(dataRequest()),
+  
+});
 
-export default connect(mapStateToProps)(SurfaceWrapperStyled);
+export default connect(mapStateToProps, mapDispatchToProps)(injectSheet(styles)(SurfaceWrapper));
 
 

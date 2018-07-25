@@ -4,12 +4,12 @@ import injectSheet from 'react-jss';
 import PropTypes from 'prop-types';
 import hooverImg from './roomba_hoover.png';
 import { MODULE_SIZE } from '../../config/constants';
-import {getDirtCoordinates, getHooverPosition} from '../../config/selectors';
+import { getHooverPosition, getDirections } from '../../config/selectors';
 
 import {
   moveHoover,
   cleanDirt,
-} from "./actions";
+} from '../../config/actions';
 
 const styles = {
   root: props => ({
@@ -24,16 +24,22 @@ const styles = {
 };
 
 class Hoover extends React.Component {
+  static propTypes = {
+    classes: PropTypes.objectOf(PropTypes.string).isRequired,
+    hooverPosition: PropTypes.arrayOf(PropTypes.number).isRequired,
+    directions: PropTypes.arrayOf(PropTypes.string).isRequired,
+  };
+  
   componentDidMount() {
-    this.onSomeAction();
+    this.handleHooverMove();
   }
 
   componentDidUpdate() {
     this.props.cleanDirt(this.props.hooverPosition);
   }
 
-  onSomeAction = () => {
-    'ENNNSSSE'.split('').forEach((direction, index) => {
+  handleHooverMove = () => {
+    this.props.directions.forEach((direction, index) => {
       setTimeout(() => this.props.moveHoover(direction.toUpperCase()), (index + 1) * 1000);
     });
   };
@@ -47,6 +53,7 @@ class Hoover extends React.Component {
 
 const mapStateToProps = state => ({
   hooverPosition: getHooverPosition(state),
+  directions: getDirections(state),
 });
 
 const mapDispatchToProps = dispatch => ({

@@ -1,9 +1,8 @@
-import handleDirtRemoving from '../room/dirtRemoving';
-
 import {
   MOVE_HOOVER,
   AVAILABLE_DIRECTIONS,
-} from "./constants";
+  INIT_HOOVER_STATE
+} from '../constants';
 
 function getNewPosition(oldPosition, direction) {
 
@@ -46,14 +45,21 @@ function dispatchMove(hooverPosition, direction) {
 }
 
 const initialState = {
-  position: [0, 0],
+  position: [],
+  directions: []
 };
 
 const hooverReducer = (state = initialState, action) => {
   switch(action.type) {
+    case INIT_HOOVER_STATE:
+      return {
+        position: action.position,
+        directions: action.directions
+      };
     case MOVE_HOOVER:
       const hooverPosition = dispatchMove(state.position, action.direction);
       return {
+        ...state,
         position: hooverPosition,
       };
     default:

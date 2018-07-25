@@ -1,7 +1,19 @@
-import textData from 'input.txt';
+import {
+  fetchData,
+  fetchDataError,
+  fetchDataSuccess,
+} from './actions';
+import { TEXT_DATA_URL } from './constants';
+import { parseTextData } from './helpers';
 
-function parseData(textData) {
-  const rows = textData.split('\n');
+export const dataRequest = () => (dispatch) => {
+  dispatch(fetchData());
   
-  console.log(rows);
-}
+  return fetch(TEXT_DATA_URL)
+    .then(response => response.text())
+    .catch(error => dispatch(fetchDataError(error)))
+    .then(response => {
+      const parsedData = parseTextData(response);
+      dispatch(fetchDataSuccess(parsedData))
+    });
+};
